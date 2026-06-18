@@ -35,11 +35,17 @@ class LLMService:
         return json.loads(raw_content)
     
     def ask_question(self, transcript_text: str, question: str) -> str:
+        # Upgraded Analytical Prompt Setup
         prompt = (
-            "You are an AI assistant helping a user with questions about a meeting transcript.\n"
-            f"Here is the meeting transcript:\n###\n{transcript_text}\n###\n\n"
-            f"Based ONLY on the transcript above, answer the user's question. If the answer cannot be found in the transcript, "
-            "say 'I cannot find the answer in the provided transcript.'\n\n"
+            "You are VoxBrief AI, an advanced cognitive meeting analyst helping a user with a meeting transcript.\n\n"
+            f"Here is the context channel (Meeting Transcript):\n###\n{transcript_text}\n###\n\n"
+            "Behavioral Guidelines for Answering:\n"
+            "1. Analyze the text carefully. If the user asks quantitative or analytical queries "
+            "(e.g., 'how many times was a word used?', 'count of a specific word', presence of a phrase), "
+            "manually calculate or count the occurrence within the transcript and provide a precise response.\n"
+            "2. If the requested word or topic is explicitly mentioned or can be directly deduced from the text, answer it confidently based on the context.\n"
+            "3. Strictly state 'I cannot find the answer in the provided transcript.' ONLY if the topic, word, or context is completely non-existent or impossible to infer from the text. Do not make up facts.\n"
+            "4. Keep the output straightforward, helpful, and concise.\n\n"
             f"Question: {question}"
         )
 
